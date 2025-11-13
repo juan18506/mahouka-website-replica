@@ -33,7 +33,7 @@ jobs:
       - name: Install Sass
         run: npm install -g sass
       - name: Compile SASS
-        run: sass src/scss/index.scss public/index.css
+        run: sass src/scss/index.scss public/css/index.css
   # Single deploy job since we're just deploying
   deploy:
     environment:
