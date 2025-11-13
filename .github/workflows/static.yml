@@ -23,6 +23,26 @@ concurrency:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+    outputs:
+      public-path: ${{ steps.upload-artifact.outputs.artifact-path }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+      - name: Install Sass
+        run: npm install -g sass
+      - name: Compile Sass
+        run: sass src/scss/index.scss public/css/index.css
+      - name: Upload public folder
+        id: upload-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: public-folder
+          path: public
+
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -30,12 +50,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v5
-      - name: Install Sass
-        run: npm install -g sass
-      - name: Compile SASS
-        run: sass src/scss/index.scss public/css/index.css
+      - name: Download public folder artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: public-folder
+          path: public
+      - name: Copy files to public
+        run: | 
+          cp index.html public/index.html
+          cp src/index.js public/index.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
