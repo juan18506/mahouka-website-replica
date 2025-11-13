@@ -34,7 +34,7 @@ jobs:
       - name: Install Sass
         run: npm install -g sass
       - name: Compile Sass
-        run: sass src/scss/index.scss public/css/index.css
+        run: sass src/scss/index.scss public/index.css
       - name: Upload public folder
         id: upload-artifact
         uses: actions/upload-artifact@v4
