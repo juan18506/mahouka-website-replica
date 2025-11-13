@@ -1,4 +1,4 @@
-name: Compile SASS y publish
+name: Compile SASS y Publish
 
 on:
   push:
@@ -15,4 +15,10 @@ jobs:
       - name: Install Sass
         run: npm install -g sass
       - name: Compile SASS
-        run: sass src/scss/index.scss dist/css/index.css
+        run: sass src/scss/index.scss public/index.css
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          
